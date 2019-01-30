@@ -3,6 +3,8 @@ const { Toolkit } = require("actions-toolkit");
 const tools = new Toolkit();
 const octokit = tools.github;
 
+const pkg = tools.getPackageJSON();
+
 console.log(
   "context of this action: ",
   tools.context
@@ -39,7 +41,7 @@ async function commentOnFirstContribution(
     const commentBody = `
 🥳 🎉 🎊
 
-This is your first contribution to this project. Thanks a lot and a warm welcome to you.
+Yay! Welcome to the ${pkg.name} project.
 `;
 
     const params = tools.context.repo({
