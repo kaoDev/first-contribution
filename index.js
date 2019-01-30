@@ -8,18 +8,18 @@ console.log(
   tools.context
 );
 
-// if (tools.context.action === "opened") {
-const { pull_request } = tools.context.payload;
+if (tools.context.action === "opened") {
+  const { pull_request } = tools.context.payload;
 
-if (pull_request) {
-  const author = pull_request["user"];
+  if (pull_request) {
+    const author = pull_request["user"];
 
-  commentOnFirstContribution(
-    author.login,
-    pull_request.number
-  );
+    commentOnFirstContribution(
+      author.login,
+      pull_request.number
+    );
+  }
 }
-// }
 
 async function commentOnFirstContribution(
   authorLogin,
@@ -30,22 +30,22 @@ async function commentOnFirstContribution(
   );
 
   console.log(contributors);
-  //   if (
-  //     !contributors.data.some(
-  //       contributor =>
-  //         contributor.login === authorLogin
-  //     )
-  //   ) {
-  const commentBody = `
+  if (
+    !contributors.data.some(
+      contributor =>
+        contributor.login === authorLogin
+    )
+  ) {
+    const commentBody = `
 🥳 🎉 🎊
 
-This is your first Pull request on this project. Thanks a lot and a warm welcome to you.
+This is your first contribution to this project. Thanks a lot and a warm welcome to you.
 `;
 
-  const params = tools.context.repo({
-    number: prNumber,
-    body: commentBody
-  });
-  octokit.issues.createComment(params);
-  //   }
+    const params = tools.context.repo({
+      number: prNumber,
+      body: commentBody
+    });
+    octokit.issues.createComment(params);
+  }
 }
