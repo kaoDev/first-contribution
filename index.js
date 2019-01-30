@@ -1,4 +1,4 @@
-import { Toolkit } from "actions-toolkit";
+const { Toolkit } = require("actions-toolkit");
 
 const tools = new Toolkit();
 const octokit = tools.github;
@@ -24,22 +24,23 @@ async function commentOnFirstContribution(
     tools.context.repo()
   );
 
-  if (
-    !contributors.data.some(
-      contributor =>
-        contributor.login === authorLogin
-    )
-  ) {
-    const commentBody = `
+  console.log(contributors);
+  //   if (
+  //     !contributors.data.some(
+  //       contributor =>
+  //         contributor.login === authorLogin
+  //     )
+  //   ) {
+  const commentBody = `
 🥳 🎉 🎊
 
 This is your first Pull request on this project. Thanks a lot and a warm welcome to you.
 `;
 
-    const params = tools.context.repo({
-      number: prNumber,
-      body: commentBody
-    });
-    octokit.issues.createComment(params);
-  }
+  const params = tools.context.repo({
+    number: prNumber,
+    body: commentBody
+  });
+  octokit.issues.createComment(params);
+  //   }
 }
