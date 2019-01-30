@@ -3,18 +3,23 @@ const { Toolkit } = require("actions-toolkit");
 const tools = new Toolkit();
 const octokit = tools.github;
 
-if (tools.context.action === "opened") {
-  const { pull_request } = tools.context.payload;
+console.log(
+  "context of this action: ",
+  tools.context
+);
 
-  if (pull_request) {
-    const author = pull_request["user"];
+// if (tools.context.action === "opened") {
+const { pull_request } = tools.context.payload;
 
-    commentOnFirstContribution(
-      author.login,
-      pull_request.number
-    );
-  }
+if (pull_request) {
+  const author = pull_request["user"];
+
+  commentOnFirstContribution(
+    author.login,
+    pull_request.number
+  );
 }
+// }
 
 async function commentOnFirstContribution(
   authorLogin,
