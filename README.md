@@ -18,3 +18,5 @@ action "Greet" {
   secrets = ["GITHUB_TOKEN"]
 }
 ```
+
+
