@@ -10,7 +10,7 @@ console.log(
   tools.context
 );
 
-if (tools.context.action === "opened") {
+async function commentOnFirstContribution() {
   const { pull_request } = tools.context.payload;
 
   if (pull_request) {
@@ -20,39 +20,43 @@ if (tools.context.action === "opened") {
       author.login,
       pull_request.number
     );
-  }
-}
 
-async function commentOnFirstContribution(
-  authorLogin,
-  prNumber
-) {
-  const contributors = await octokit.repos.listContributors(
-    tools.context.repo()
-  );
+    const {
+      data: contributors
+    } = await octokit.repos.listContributors(
+      tools.context.repo()
+    );
 
-  console.log(
-    "search ",
-    authorLogin,
-    " in ",
-    contributors.data
-  );
-  if (
-    !contributors.data.some(
+    const isAlreadyContributor = contributors.some(
       contributor =>
         contributor.login === authorLogin
-    )
-  ) {
-    const commentBody = `
+    );
+
+    console.log(
+      "search ",
+      authorLogin,
+      " in ",
+      contributors,
+      " isAlreadyContributor ",
+      isAlreadyContributor
+    );
+
+    if (
+      tools.context.action === "opened" &&
+      !isAlreadyContributor
+    ) {
+      const commentBody = `
 🥳 🎉 🎊
 
 Yay! Welcome to the ${pkg.name} project.
 `;
-
-    const params = tools.context.repo({
-      number: prNumber,
-      body: commentBody
-    });
-    octokit.issues.createComment(params);
+      const params = tools.context.repo({
+        number: prNumber,
+        body: commentBody
+      });
+      octokit.issues.createComment(params);
+    }
   }
 }
+
+commentOnFirstContribution();
