@@ -31,7 +31,12 @@ async function commentOnFirstContribution(
     tools.context.repo()
   );
 
-  console.log(contributors);
+  console.log(
+    "search ",
+    authorLogin,
+    " in ",
+    contributors.data
+  );
   if (
     !contributors.data.some(
       contributor =>
