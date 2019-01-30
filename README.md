@@ -5,7 +5,7 @@
 
 This GitHub Action adds a comment with a welcome
 message to PRs coming from first contributors to
-your project. Yay!
+your project.
 
 ```workflow
 workflow "Welcome" {
