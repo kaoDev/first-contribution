@@ -16,11 +16,6 @@ async function commentOnFirstContribution() {
   if (pull_request) {
     const author = pull_request["user"];
 
-    commentOnFirstContribution(
-      author.login,
-      pull_request.number
-    );
-
     const {
       data: contributors
     } = await octokit.repos.listContributors(
@@ -29,12 +24,12 @@ async function commentOnFirstContribution() {
 
     const isAlreadyContributor = contributors.some(
       contributor =>
-        contributor.login === authorLogin
+        contributor.login === author.login
     );
 
     console.log(
       "search ",
-      authorLogin,
+      author.login,
       " in ",
       contributors,
       " isAlreadyContributor ",
