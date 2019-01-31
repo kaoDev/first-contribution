@@ -1,3 +1,4 @@
+// @ts-check
 const { Toolkit } = require("actions-toolkit");
 
 const tools = new Toolkit();
@@ -37,16 +38,19 @@ async function commentOnFirstContribution() {
     );
 
     if (
-      tools.context.action === "opened" &&
+      tools.context.payload.action === "opened" &&
       !isAlreadyContributor
     ) {
       const commentBody = `
 🥳 🎉 🎊
 
-Yay! Welcome to the ${pkg.name} project.
+Yay! Welcome to the ${
+        // @ts-ignore
+        pkg.name
+      } project.
 `;
       const params = tools.context.repo({
-        number: prNumber,
+        number: pull_request.number,
         body: commentBody
       });
       octokit.issues.createComment(params);
